@@ -241,17 +241,31 @@ Application {
         FileHelper.writeFile(appState.currentListName, data)
     }
 
+    function updateItemInPlace(sourceIndex, newName, newCategory) {
+        shoppingModel.setProperty(sourceIndex, "name",     newName)
+        shoppingModel.setProperty(sourceIndex, "category", newCategory)
+        for (var i = 0; i < flatModel.count; i++) {
+            if (flatModel.get(i).sourceIndex === sourceIndex) {
+                flatModel.setProperty(i, "name",          newName)
+                flatModel.setProperty(i, "category",      newCategory)
+                flatModel.setProperty(i, "categoryColor", getCategoryColor(newCategory))
+                break
+            }
+        }
+        saveShoppingList()
+    }
+
     // ----------------------------------------------------------------
     // Flat display model builder
     //
     // Layout order:
     //   1. Category groups (sorted by sortOrder)
-    //      — header row per category if it has ≥1 unchecked item
-    //      — unchecked items alphabetically within group
-    //   2. Uncategorized unchecked items (no header, plain rows)
-    //   3. All checked items flat at bottom (no category color)
+    //      — header row per category if it has ≥1 item
+    //      — items alphabetically within group, checked state in place
+    //   2. Uncategorized items (no header, plain rows, alpha sorted)
     //
-    // flatModel roles: type, name, checked, category, categoryColor, sourceIndex
+    // flatModel roles: type, name, checked, category, categoryColor,
+    //                  sortNum, sourceIndex, allChecked
     // ----------------------------------------------------------------
     function buildFlatModel() {
         flatModel.clear()

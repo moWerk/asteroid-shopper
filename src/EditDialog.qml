@@ -270,20 +270,19 @@ Item {
                         var newCategory = editDialog.selectedCategory === "None"
                         ? "" : editDialog.selectedCategory
 
+                        pop()
+
                         if (isListEdit) {
                             if (editIndex >= 0) renameList(editText, trimmed)
                                 else                createList(trimmed)
                         } else if (editIndex >= 0 && editDialog.selectedList !== appState.currentListName) {
                             moveItemToList(editIndex, editDialog.selectedList, trimmed, newCategory)
                         } else if (editIndex >= 0) {
-                            shoppingModel.setProperty(editIndex, "name",     trimmed)
-                            shoppingModel.setProperty(editIndex, "category", newCategory)
-                            buildFlatModel()
+                            updateItemInPlace(editIndex, trimmed, newCategory)
                         } else {
                             shoppingModel.append({ name: trimmed, checked: false, category: newCategory })
                             buildFlatModel()
                         }
-                        pop()
                     }
                 }
             }

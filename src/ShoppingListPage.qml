@@ -27,6 +27,18 @@ Item {
     width: root.width
     height: root.height
 
+    property bool refreshIndicatorVisible: false
+    property bool overscrollRebuildPending: false
+
+    Timer {
+        id: reloadTimer
+        interval: 400
+        repeat: false
+        onTriggered: {
+            loadShoppingList()
+            refreshAnim.restart()
+        }
+    }
     // ----------------------------------------------------------------
     // Restore scroll to top after list switch
     // ----------------------------------------------------------------
@@ -46,6 +58,26 @@ Item {
         Component.onCompleted: animate()
     }
 
+    Icon {
+        id: refreshIndicator
+        name: "ios-refresh-circle-outline"
+        width:  Dims.l(30)
+        height: Dims.l(30)
+        anchors {
+            top: listHeader.bottom
+            horizontalCenter: parent.horizontalCenter
+        }
+        opacity: 0.0
+
+        SequentialAnimation {
+            id: refreshAnim
+            running: false
+            NumberAnimation { target: refreshIndicator; property: "opacity"; to: 1.0; duration: 150; easing.type: Easing.InOutQuad }
+            PauseAnimation  { duration: 300 }
+            NumberAnimation { target: refreshIndicator; property: "opacity"; to: 0.0; duration: 150; easing.type: Easing.InOutQuad }
+        }
+    }
+
     // ----------------------------------------------------------------
     // Main list — fills page entirely; PageHeader paints on top via
     // declaration order. header: spacer pushes first item below header.
@@ -59,6 +91,14 @@ Item {
         header: Item {
             width: listView.width
             height: listHeader.height
+        }
+
+        onVerticalOvershootChanged: {
+            if (verticalOvershoot < -Dims.l(30) && !shoppingListPage.overscrollRebuildPending) {
+                shoppingListPage.overscrollRebuildPending = true
+                reloadTimer.restart()
+            }
+            if (verticalOvershoot === 0) shoppingListPage.overscrollRebuildPending = false
         }
 
         delegate: Item {
