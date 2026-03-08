@@ -46,7 +46,6 @@ Item {
         model: listsModel
         clip: true
 
-        // Spacer so first row starts below PageHeader
         header: Item {
             width: listsView.width
             height: listsHeader.height
@@ -55,7 +54,7 @@ Item {
         delegate: Item {
             id: listDelegateRoot
             width: listsView.width
-            height: Dims.l(17)
+            height: appStyle.rowHeight
 
             property bool isDefault: model.name === "default"
             property bool isCurrent: model.name === appState.currentListName
@@ -63,7 +62,7 @@ Item {
             // Active list background
             Rectangle {
                 anchors.fill: parent
-                color: "#119DA4"
+                color: appStyle.accentColor
                 opacity: 0.2
                 visible: isCurrent
             }
@@ -77,7 +76,7 @@ Item {
                     right: parent.right
                     rightMargin: Dims.l(9)
                 }
-                height:           Dims.l(13)
+                height:           appStyle.categoryHeaderHeight
                 valueLowerBound:  0
                 valueUpperBound:  Math.max(model.itemCount, 1)
                 value:            model.checkedCount
@@ -96,8 +95,8 @@ Item {
                 }
                 //% "Starter Pack"
                 text: isDefault ? qsTrId("id-default") : model.name
-                font.pixelSize: Dims.l(8)
-                color: "#ffffff"
+                font.pixelSize: appStyle.bodyFontSize
+                color: appStyle.labelColor
                 elide: Text.ElideRight
             }
 
@@ -109,25 +108,21 @@ Item {
                     right: parent.right
                     rightMargin: Dims.l(16)
                 }
-                text: model.checkedCount +"/"+ model.itemCount
+                text: model.checkedCount + "/" + model.itemCount
                 font {
-                    pixelSize: Dims.l(6)
+                    pixelSize: appStyle.secondaryFontSize
                     family:    "Noto Sans Condensed"
                 }
                 color: "#aaffffff"
             }
 
             // Row separator
-            Rectangle {
-                anchors { bottom: parent.bottom; left: parent.left; right: parent.right }
-                height: 1
-                color: "#20ffffff"
-            }
+            RowSeparator {}
 
             // Press highlight
             Rectangle {
                 anchors.fill: parent
-                color: listMouseArea.containsPress ? "#33ffffff" : "transparent"
+                color: listMouseArea.containsPress ? appStyle.pressColor : "transparent"
                 Behavior on color {
                     ColorAnimation { duration: 150; easing.type: Easing.OutQuad }
                 }
@@ -158,13 +153,13 @@ Item {
         // ----------------------------------------------------------------
         footer: Item {
             width: listsView.width
-            height: Dims.l(26)
+            height: appStyle.footerRowHeight
 
             Icon {
                 id: newListIcon
                 name: "ios-add-circle-outline"
-                width: Dims.l(11)
-                height: Dims.l(11)
+                width:  appStyle.iconSize
+                height: appStyle.iconSize
                 anchors {
                     horizontalCenter: parent.horizontalCenter
                     top: parent.top
@@ -180,15 +175,15 @@ Item {
                 }
                 //% "Fresh Haul"
                 text: qsTrId("id-new-list")
-                font.pixelSize: Dims.l(6)
+                font.pixelSize: appStyle.secondaryFontSize
                 font.bold: true
-                color: "#80ffffff"
+                color: appStyle.dimLabelColor
             }
 
             Rectangle {
                 anchors { top: parent.top; left: parent.left; right: parent.right }
                 height: 1
-                color: "#20ffffff"
+                color: appStyle.separatorColor
             }
 
             HighlightBar {

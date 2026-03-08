@@ -27,7 +27,6 @@ Item {
     width: root.width
     height: root.height
 
-    property bool refreshIndicatorVisible: false
     property bool overscrollRebuildPending: false
 
     Timer {
@@ -39,6 +38,7 @@ Item {
             refreshAnim.restart()
         }
     }
+
     // ----------------------------------------------------------------
     // Restore scroll to top after list switch
     // ----------------------------------------------------------------
@@ -104,7 +104,7 @@ Item {
         delegate: Item {
             id: delegateRoot
             width: listView.width
-            height: model.type === "categoryHeader" ? Dims.l(13) : Dims.l(17)
+            height: model.type === "categoryHeader" ? appStyle.categoryHeaderHeight : appStyle.rowHeight
 
             // ---- Category colour band ----
             Rectangle {
@@ -127,9 +127,9 @@ Item {
                     leftMargin: Dims.l(9)
                 }
                 text: "#" + model.sortNum + " " + model.name
-                font.pixelSize: Dims.l(6)
+                font.pixelSize: appStyle.secondaryFontSize
                 font.bold: true
-                color: "#ffffff"
+                color: appStyle.labelColor
             }
 
             // ---- Item content ----
@@ -145,16 +145,16 @@ Item {
 
                 Icon {
                     name: model.checked ? "ios-checkmark-circle-outline" : "ios-circle-outline"
-                    Layout.preferredWidth: Dims.l(11)
-                    Layout.preferredHeight: Dims.l(11)
+                    Layout.preferredWidth:  appStyle.iconSize
+                    Layout.preferredHeight: appStyle.iconSize
                     Layout.leftMargin: Dims.l(16)
                 }
 
                 Label {
                     text: model.name
-                    font.pixelSize: Dims.l(8)
+                    font.pixelSize: appStyle.bodyFontSize
                     font.strikeout: model.checked
-                    color: "#ffffff"
+                    color: appStyle.labelColor
                     verticalAlignment: Text.AlignVCenter
                     horizontalAlignment: Text.AlignLeft
                     elide: Text.ElideRight
@@ -165,17 +165,12 @@ Item {
             }
 
             // ---- Row separator (items only) ----
-            Rectangle {
-                visible: model.type === "item"
-                anchors { bottom: parent.bottom; left: parent.left; right: parent.right }
-                height: 1
-                color: "#20ffffff"
-            }
+            RowSeparator { visible: model.type === "item" }
 
             // ---- Press highlight ----
             Rectangle {
                 anchors.fill: parent
-                color: delegateMouseArea.containsPress ? "#33ffffff" : "transparent"
+                color: delegateMouseArea.containsPress ? appStyle.pressColor : "transparent"
                 Behavior on color {
                     ColorAnimation { duration: 150; easing.type: Easing.OutQuad }
                 }
@@ -237,24 +232,24 @@ Item {
         // ----------------------------------------------------------------
         footer: Item {
             width: listView.width
-            height: Dims.l(13)
+            height: appStyle.footerDividerHeight
             + Dims.l(52)
-            + (hasUserLists ? Dims.l(26) : 0)
+            + (hasUserLists ? appStyle.footerRowHeight : 0)
             + (hasUserLists ? Dims.l(10) : 0)
             + (appState.currentListName === "default"
             ? warningLabel.height + (DeviceSpecs.hasRoundScreen ? Dims.l(24) : Dims.l(12))
             : 0)
 
-            // ── Footer separator — visually detaches list from buttons ──
+            // ── Footer divider ────────────────────────────────────────
             Item {
                 id: footerDivider
                 anchors { top: parent.top; left: parent.left; right: parent.right }
-                height: Dims.l(13)
+                height: appStyle.footerDividerHeight
 
                 Rectangle {
                     anchors { bottom: parent.bottom; left: parent.left; right: parent.right }
                     height: 1
-                    color: "#20ffffff"
+                    color: appStyle.separatorColor
                 }
             }
 
@@ -262,13 +257,13 @@ Item {
             Item {
                 id: addRow
                 anchors { top: footerDivider.bottom; left: parent.left; right: parent.right }
-                height: Dims.l(26)
+                height: appStyle.footerRowHeight
 
                 Icon {
                     id: addIcon
                     name: "ios-add-circle-outline"
-                    width: Dims.l(11)
-                    height: Dims.l(11)
+                    width:  appStyle.iconSize
+                    height: appStyle.iconSize
                     anchors {
                         horizontalCenter: parent.horizontalCenter
                         top: parent.top
@@ -283,9 +278,9 @@ Item {
                     }
                     //% "Add Item"
                     text: qsTrId("id-add-item")
-                    font.pixelSize: Dims.l(6)
+                    font.pixelSize: appStyle.secondaryFontSize
                     font.bold: true
-                    color: "#ffffff"
+                    color: appStyle.labelColor
                 }
 
                 HighlightBar {
@@ -305,20 +300,20 @@ Item {
                 id: footerSep1
                 anchors { top: addRow.bottom; left: parent.left; right: parent.right }
                 height: 1
-                color: "#20ffffff"
+                color: appStyle.separatorColor
             }
 
             // ── Check / Uncheck All row ───────────────────────────────
             Item {
                 id: checkRow
                 anchors { top: footerSep1.bottom; left: parent.left; right: parent.right }
-                height: Dims.l(26)
+                height: appStyle.footerRowHeight
 
                 Icon {
                     id: checkAllIcon
                     name: appState.anyChecked ? "ios-refresh-circle-outline" : "ios-checkmark-circle-outline"
-                    width: Dims.l(11)
-                    height: Dims.l(11)
+                    width:  appStyle.iconSize
+                    height: appStyle.iconSize
                     anchors {
                         horizontalCenter: parent.horizontalCenter
                         top: parent.top
@@ -335,9 +330,9 @@ Item {
                     text: appState.anyChecked ? qsTrId("id-uncheck-all")
                     //% "Check All Items"
                     : qsTrId("id-check-all")
-                    font.pixelSize: Dims.l(6)
+                    font.pixelSize: appStyle.secondaryFontSize
                     font.bold: true
-                    color: "#ffffff"
+                    color: appStyle.labelColor
                 }
 
                 HighlightBar {
@@ -350,7 +345,7 @@ Item {
                 visible: hasUserLists
                 anchors { top: checkRow.bottom; left: parent.left; right: parent.right }
                 height: hasUserLists ? 1 : 0
-                color: "#20ffffff"
+                color: appStyle.separatorColor
             }
 
             // ── All My Hauls row ──────────────────────────────────────
@@ -358,13 +353,13 @@ Item {
                 id: allListsRow
                 visible: hasUserLists
                 anchors { top: footerSep2.bottom; left: parent.left; right: parent.right }
-                height: hasUserLists ? Dims.l(26) : 0
+                height: hasUserLists ? appStyle.footerRowHeight : 0
 
                 Icon {
                     id: allListsIcon
                     name: "ios-list-box-outline"
-                    width: Dims.l(11)
-                    height: Dims.l(11)
+                    width:  appStyle.iconSize
+                    height: appStyle.iconSize
                     anchors {
                         horizontalCenter: parent.horizontalCenter
                         top: parent.top
@@ -379,9 +374,9 @@ Item {
                     }
                     //% "All My Hauls"
                     text: qsTrId("id-show-all-lists")
-                    font.pixelSize: Dims.l(6)
+                    font.pixelSize: appStyle.secondaryFontSize
                     font.bold: true
-                    color: "#ffffff"
+                    color: appStyle.labelColor
                 }
 
                 HighlightBar {
@@ -402,7 +397,7 @@ Item {
                 visible: hasUserLists
                 anchors { top: spacerAfterLists.bottom; left: parent.left; right: parent.right }
                 height: hasUserLists ? 1 : 0
-                color: "#20ffffff"
+                color: appStyle.separatorColor
             }
 
             Label {
@@ -413,14 +408,13 @@ Item {
                     topMargin: Dims.l(5)
                     left: parent.left
                     right: parent.right
-                    leftMargin: DeviceSpecs.hasRoundScreen ? Dims.l(14) : Dims.l(8)
+                    leftMargin:  DeviceSpecs.hasRoundScreen ? Dims.l(14) : Dims.l(8)
                     rightMargin: DeviceSpecs.hasRoundScreen ? Dims.l(14) : Dims.l(8)
-
                 }
                 //% "This is a demo list meant for exploring the app. It will be reset on reinstall and should be deleted once you have created your own list."
                 text: qsTrId("id-default-list-warning")
-                font.pixelSize: Dims.l(6)
-                color: "#ffffff"
+                font.pixelSize: appStyle.secondaryFontSize
+                color: appStyle.labelColor
                 wrapMode: Text.WordWrap
                 horizontalAlignment: Text.AlignHCenter
             }
