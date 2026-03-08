@@ -71,7 +71,11 @@ Item {
                 anchors.fill: parent
                 visible: model.categoryColor !== ""
                 color: model.categoryColor !== "" ? model.categoryColor : "transparent"
-                opacity: model.type === "categoryHeader" ? 0.7 : (model.checked ? 0.2 : 0.35)
+                opacity: model.type === "categoryHeader" ? (model.allChecked ? 0.3 : 0.8) : (model.checked ? 0.3 : 0.5)
+
+                Behavior on opacity {
+                    NumberAnimation { duration: 300; easing.type: Easing.InOutQuad }
+                }
             }
 
             // ---- Category header content ----
@@ -147,6 +151,24 @@ Item {
                         var wasChecked = model.checked
                         shoppingModel.setProperty(model.sourceIndex, "checked", !wasChecked)
                         flatModel.setProperty(index, "checked", !wasChecked)
+
+                        // Live-update the category header's allChecked role
+                        if (model.category !== "") {
+                            for (var h = index - 1; h >= 0; h--) {
+                                var hr = flatModel.get(h)
+                                if (hr.type === "categoryHeader" && hr.category === model.category) {
+                                    var allDone = true
+                                    for (var s = h + 1; s < flatModel.count; s++) {
+                                        var sr = flatModel.get(s)
+                                        if (sr.type === "categoryHeader") break
+                                            if (!sr.checked) { allDone = false; break }
+                                    }
+                                    flatModel.setProperty(h, "allChecked", allDone)
+                                    break
+                                }
+                            }
+                        }
+
                         saveShoppingList()
                         updateAnyChecked()
                 }

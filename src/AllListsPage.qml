@@ -68,12 +68,21 @@ Item {
                 visible: isCurrent
             }
 
-            // Active list indicator bar
-            Rectangle {
-                anchors { left: parent.left; top: parent.top; bottom: parent.bottom }
-                width: Dims.l(1)
-                color: "#119DA4"
-                visible: isCurrent
+            // Progress meter — behind text, covers most of row width
+            ValueMeter {
+                anchors {
+                    verticalCenter: parent.verticalCenter
+                    left:  parent.left
+                    leftMargin:  Dims.l(9)
+                    right: parent.right
+                    rightMargin: Dims.l(9)
+                }
+                height:           Dims.l(13)
+                valueLowerBound:  0
+                valueUpperBound:  Math.max(model.itemCount, 1)
+                value:            model.checkedCount
+                enableAnimations: false
+                fillColor:        "#CC8ED081"
             }
 
             // List name
@@ -81,7 +90,7 @@ Item {
                 anchors {
                     verticalCenter: parent.verticalCenter
                     left: parent.left
-                    leftMargin: Dims.l(14)
+                    leftMargin: Dims.l(16)
                     right: countLabel.left
                     rightMargin: Dims.l(3)
                 }
@@ -98,11 +107,14 @@ Item {
                 anchors {
                     verticalCenter: parent.verticalCenter
                     right: parent.right
-                    rightMargin: Dims.l(14)
+                    rightMargin: Dims.l(16)
                 }
-                text: model.itemCount
-                font.pixelSize: Dims.l(6)
-                color: "#80ffffff"
+                text: model.checkedCount +"/"+ model.itemCount
+                font {
+                    pixelSize: Dims.l(6)
+                    family:    "Noto Sans Condensed"
+                }
+                color: "#aaffffff"
             }
 
             // Row separator

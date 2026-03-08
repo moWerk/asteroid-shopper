@@ -27,7 +27,7 @@ Application {
     id: root
     anchors.fill: parent
 
-    centerColor: "#119DA4"
+    centerColor: "#0E7B81"
     outerColor: "#090B0C"
 
     signal listLoaded()
@@ -193,6 +193,12 @@ Application {
             return content.split('\n').filter(function(l) { return l.trim() !== '' }).length
     }
 
+    function countCheckedItems(listName) {
+        var content = FileHelper.readFile(listName)
+        if (!content) return 0
+            return content.split('\n').filter(function(l) { return l.trim().charAt(0) === '+' }).length
+    }
+
     // ----------------------------------------------------------------
     // List management
     // ----------------------------------------------------------------
@@ -200,8 +206,11 @@ Application {
         defaultExists = FileHelper.exists("default") && countItems("default") > 0
         listsModel.clear()
         var arr = getUserLists()
-        arr.forEach(function(n) { listsModel.append({ name: n, itemCount: countItems(n) }) })
-        if (defaultExists) listsModel.append({ name: "default", itemCount: countItems("default") })
+        arr.forEach(function(n) {
+            listsModel.append({ name: n, itemCount: countItems(n), checkedCount: countCheckedItems(n) })
+        })
+        if (defaultExists)
+            listsModel.append({ name: "default", itemCount: countItems("default"), checkedCount: countCheckedItems("default") })
     }
 
     function loadShoppingList() {
@@ -249,7 +258,6 @@ Application {
         var cats = getCategories()
         cats.sort(function(a, b) { return a.sortOrder - b.sortOrder })
 
-        // Category groups — always shown, items alphabetical, checked state in place
         for (var ci = 0; ci < cats.length; ci++) {
             var cat = cats[ci]
             var items = []
@@ -260,17 +268,17 @@ Application {
             }
             if (items.length === 0) continue
                 items.sort(function(a, b) { return a.name.localeCompare(b.name) })
+                var allChecked = items.every(function(it) { return it.checked })
                 flatModel.append({ type: "categoryHeader", name: cat.name,
                     sortNum: cat.sortOrder + 1, checked: false, category: cat.name,
-                    categoryColor: cat.color, sourceIndex: -1 })
+                    categoryColor: cat.color, sourceIndex: -1, allChecked: allChecked })
                 for (var ai = 0; ai < items.length; ai++) {
                     flatModel.append({ type: "item", name: items[ai].name, checked: items[ai].checked,
                         category: cat.name, categoryColor: cat.color,
-                        sourceIndex: items[ai].sourceIndex })
+                        sourceIndex: items[ai].sourceIndex, allChecked: false })
                 }
         }
 
-        // Uncategorized items — alphabetical, checked state in place
         var uncatItems = []
         for (var ui = 0; ui < shoppingModel.count; ui++) {
             var um = shoppingModel.get(ui)
@@ -280,7 +288,7 @@ Application {
         uncatItems.sort(function(a, b) { return a.name.localeCompare(b.name) })
         for (var uu = 0; uu < uncatItems.length; uu++) {
             flatModel.append({ type: "item", name: uncatItems[uu].name, checked: uncatItems[uu].checked,
-                category: "", categoryColor: "", sourceIndex: uncatItems[uu].sourceIndex })
+                category: "", categoryColor: "", sourceIndex: uncatItems[uu].sourceIndex, allChecked: false })
         }
 
         saveShoppingList()
@@ -310,9 +318,14 @@ Application {
     }
 
     function updateCurrentListCount() {
+        var checked = 0
+        for (var j = 0; j < shoppingModel.count; j++) {
+            if (shoppingModel.get(j).checked) checked++
+        }
         for (var i = 0; i < listsModel.count; i++) {
             if (listsModel.get(i).name === appState.currentListName) {
-                listsModel.setProperty(i, "itemCount", shoppingModel.count)
+                listsModel.setProperty(i, "itemCount",    shoppingModel.count)
+                listsModel.setProperty(i, "checkedCount", checked)
                 return
             }
         }
