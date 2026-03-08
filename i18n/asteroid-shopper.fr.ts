@@ -143,13 +143,13 @@
         <location filename="../src/ShoppingListPage.qml" line="257"/>
         <source>Uncheck All Items</source>
         <oldsource>Uncheck All</oldsource>
-        <translation type="unfinished"></translation>
+        <translation>Tout décocher</translation>
     </message>
     <message id="id-check-all">
         <location filename="../src/ShoppingListPage.qml" line="259"/>
         <source>Check All Items</source>
         <oldsource>Check All</oldsource>
-        <translation type="unfinished"></translation>
+        <translation>Tout cocher</translation>
     </message>
     <message id="id-show-all-lists">
         <location filename="../src/ShoppingListPage.qml" line="303"/>
@@ -164,7 +164,7 @@
 Long-press any item or list to edit.
 Swipe left to delete.
 The Starter Pack can be cleared but not deleted.</oldsource>
-        <translation>Voici une liste de démonstration pour explorer l'application. Elle sera remise à zéro lors de la prochaine installation et peut être effacée une fois que vous aurez créé votre propre liste.</translation>
+        <translation>Voici une liste de démonstration pour explorer l&apos;application. Elle sera remise à zéro lors de la prochaine installation et peut être effacée une fois que vous aurez créé votre propre liste.</translation>
     </message>
     <message id="id-app-launcher-name">
         <location filename="asteroid-shopper.desktop.h" line="6"/>
