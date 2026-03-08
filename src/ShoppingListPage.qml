@@ -237,17 +237,31 @@ Item {
         // ----------------------------------------------------------------
         footer: Item {
             width: listView.width
-            height: Dims.l(52)
+            height: Dims.l(13)
+            + Dims.l(52)
             + (hasUserLists ? Dims.l(26) : 0)
             + (hasUserLists ? Dims.l(10) : 0)
             + (appState.currentListName === "default"
             ? warningLabel.height + (DeviceSpecs.hasRoundScreen ? Dims.l(24) : Dims.l(12))
             : 0)
 
+            // ── Footer separator — visually detaches list from buttons ──
+            Item {
+                id: footerDivider
+                anchors { top: parent.top; left: parent.left; right: parent.right }
+                height: Dims.l(13)
+
+                Rectangle {
+                    anchors { bottom: parent.bottom; left: parent.left; right: parent.right }
+                    height: 1
+                    color: "#20ffffff"
+                }
+            }
+
             // ── Add Item row ──────────────────────────────────────────
             Item {
                 id: addRow
-                anchors { top: parent.top; left: parent.left; right: parent.right }
+                anchors { top: footerDivider.bottom; left: parent.left; right: parent.right }
                 height: Dims.l(26)
 
                 Icon {
@@ -271,7 +285,7 @@ Item {
                     text: qsTrId("id-add-item")
                     font.pixelSize: Dims.l(6)
                     font.bold: true
-                    color: "#80ffffff"
+                    color: "#ffffff"
                 }
 
                 HighlightBar {
@@ -323,7 +337,7 @@ Item {
                     : qsTrId("id-check-all")
                     font.pixelSize: Dims.l(6)
                     font.bold: true
-                    color: "#80ffffff"
+                    color: "#ffffff"
                 }
 
                 HighlightBar {
@@ -367,7 +381,7 @@ Item {
                     text: qsTrId("id-show-all-lists")
                     font.pixelSize: Dims.l(6)
                     font.bold: true
-                    color: "#80ffffff"
+                    color: "#ffffff"
                 }
 
                 HighlightBar {
