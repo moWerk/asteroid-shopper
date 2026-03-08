@@ -240,7 +240,9 @@ Item {
             height: Dims.l(52)
             + (hasUserLists ? Dims.l(26) : 0)
             + (hasUserLists ? Dims.l(10) : 0)
-            + (appState.currentListName === "default" ? Dims.l(53) : 0)
+            + (appState.currentListName === "default"
+            ? warningLabel.height + (DeviceSpecs.hasRoundScreen ? Dims.l(24) : Dims.l(12))
+            : 0)
 
             // ── Add Item row ──────────────────────────────────────────
             Item {
@@ -390,14 +392,16 @@ Item {
             }
 
             Label {
+                id: warningLabel
                 visible: appState.currentListName === "default"
                 anchors {
                     top: hasUserLists ? footerSep3.bottom : footerSep2.bottom
                     topMargin: Dims.l(5)
                     left: parent.left
                     right: parent.right
-                    leftMargin: Dims.l(8)
-                    rightMargin: Dims.l(8)
+                    leftMargin: DeviceSpecs.hasRoundScreen ? Dims.l(14) : Dims.l(8)
+                    rightMargin: DeviceSpecs.hasRoundScreen ? Dims.l(14) : Dims.l(8)
+
                 }
                 //% "This is a demo list meant for exploring the app. It will be reset on reinstall and should be deleted once you have created your own list."
                 text: qsTrId("id-default-list-warning")
