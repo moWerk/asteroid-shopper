@@ -18,7 +18,6 @@
  */
 
 import QtQuick 2.9
-import QtQuick.Layouts 1.15
 import org.asteroid.utils 1.0
 import org.asteroid.controls 1.0
 
@@ -137,10 +136,9 @@ Item {
             }
 
             // ---- Item content ----
-            RowLayout {
+            Item {
                 visible: model.type === "item"
                 anchors.fill: parent
-                spacing: 0
                 opacity: model.checked ? 0.6 : 1.0
 
                 Behavior on opacity {
@@ -148,27 +146,32 @@ Item {
                 }
 
                 Icon {
+                    id: itemIcon
                     name: model.checked ? "ios-checkmark-circle-outline" : "ios-circle-outline"
-                    Layout.preferredWidth:  appStyle.iconSize
-                    Layout.preferredHeight: appStyle.iconSize
-                    Layout.leftMargin: Dims.l(16)
+                    width:  appStyle.iconSize
+                    height: appStyle.iconSize
+                    anchors {
+                        verticalCenter: parent.verticalCenter
+                        left: parent.left
+                        leftMargin: Dims.l(16)
+                    }
                 }
 
-                Label {
-                    text: model.name
-                    font {
-                        pixelSize: appStyle.bodyFontSize
-                        strikeout: model.checked
-                        family:    "Noto Sans Condensed"
-                        styleName: "Medium"
+                Marquee {
+                    anchors {
+                        verticalCenter: parent.verticalCenter
+                        left: itemIcon.right
+                        leftMargin: Dims.l(2)
+                        right: parent.right
+                        rightMargin: Dims.l(4)
                     }
+                    height: appStyle.iconSize
+                    text: model.name
+                    font.pixelSize: appStyle.bodyFontSize
+                    font.family:    "Noto Sans Condensed"
+                    font.styleName: "Medium"
+                    font.strikeout: model.checked
                     color: appStyle.labelColor
-                    verticalAlignment: Text.AlignVCenter
-                    horizontalAlignment: Text.AlignLeft
-                    elide: Text.ElideRight
-                    Layout.fillWidth: true
-                    Layout.leftMargin: Dims.l(2)
-                    Layout.rightMargin: Dims.l(4)
                 }
             }
 
