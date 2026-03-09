@@ -165,7 +165,7 @@ Item {
                         right: parent.right
                         rightMargin: Dims.l(4)
                     }
-                    height: appStyle.iconSize
+                    height: Dims.l(12.5)
                     text: model.name
                     font.pixelSize: appStyle.bodyFontSize
                     font.family:    "Noto Sans Condensed"
