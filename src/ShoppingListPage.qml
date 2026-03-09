@@ -242,6 +242,7 @@ Item {
             width: listView.width
             height: appStyle.footerDividerHeight
             + Dims.l(52)
+            + appStyle.footerRowHeight
             + (hasUserLists ? appStyle.footerRowHeight : 0)
             + (hasUserLists ? Dims.l(10) : 0)
             + (appState.currentListName === "default"
@@ -350,8 +351,57 @@ Item {
 
             Rectangle {
                 id: footerSep2
-                visible: hasUserLists
                 anchors { top: checkRow.bottom; left: parent.left; right: parent.right }
+                height: 1
+                color: appStyle.separatorColor
+            }
+
+            // ── Edit List row ─────────────────────────────────────────
+            Item {
+                id: editRow
+                anchors { top: footerSep2.bottom; left: parent.left; right: parent.right }
+                height: appStyle.footerRowHeight
+
+                Icon {
+                    id: editListIcon
+                    name: "ios-brush-outline"
+                    width:  appStyle.iconSize
+                    height: appStyle.iconSize
+                    anchors {
+                        horizontalCenter: parent.horizontalCenter
+                        top: parent.top
+                        topMargin: Dims.l(3)
+                    }
+                }
+                Label {
+                    anchors {
+                        horizontalCenter: parent.horizontalCenter
+                        top: editListIcon.bottom
+                        topMargin: Dims.l(1)
+                    }
+                    //% "Edit List"
+                    text: qsTrId("id-edit-list")
+                    font.pixelSize: appStyle.secondaryFontSize
+                    font.bold: true
+                    color: appStyle.dimLabelColor
+                }
+
+                HighlightBar {
+                    onClicked: {
+                        layerStack.push(editDialogComponent, {
+                            pop:        function() { layerStack.pop() },
+                                        editIndex:  0,
+                                        editText:   appState.currentListName,
+                                        isListEdit: true
+                        })
+                    }
+                }
+            }
+
+            Rectangle {
+                id: footerSepEdit
+                visible: hasUserLists
+                anchors { top: editRow.bottom; left: parent.left; right: parent.right }
                 height: hasUserLists ? 1 : 0
                 color: appStyle.separatorColor
             }
@@ -360,7 +410,7 @@ Item {
             Item {
                 id: allListsRow
                 visible: hasUserLists
-                anchors { top: footerSep2.bottom; left: parent.left; right: parent.right }
+                anchors { top: footerSepEdit.bottom; left: parent.left; right: parent.right }
                 height: hasUserLists ? appStyle.footerRowHeight : 0
 
                 Icon {
@@ -412,7 +462,7 @@ Item {
                 id: warningLabel
                 visible: appState.currentListName === "default"
                 anchors {
-                    top: hasUserLists ? footerSep3.bottom : footerSep2.bottom
+                    top: hasUserLists ? footerSep3.bottom : footerSepEdit.bottom
                     topMargin: Dims.l(5)
                     left: parent.left
                     right: parent.right
