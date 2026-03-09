@@ -167,7 +167,6 @@ Item {
             var cats = getCategories()
             cats.sort(function(a, b) { return a.sortOrder - b.sortOrder })
 
-            // Find the category entry by original name
             var idx = -1
             for (var i = 0; i < cats.length; i++) {
                 if (cats[i].name === categoryName) { idx = i; break }
@@ -175,26 +174,37 @@ Item {
             if (idx < 0) { pop(); return }
 
             var oldName = cats[idx].name
-
-            // Apply name change in config
             cats[idx].name = trimmedName
 
-            // Apply position change
             if (currentPosition !== initialPosition) {
+                // Structural reorder — full rebuild unavoidable
                 var cat = cats.splice(idx, 1)[0]
                 cats.splice(Math.max(0, Math.min(currentPosition - 1, cats.length)), 0, cat)
+                cats.forEach(function(c, i) { c.sortOrder = i })
+                setCategories(cats)
+                if (oldName !== trimmedName)
+                    renameCategoryInItems(oldName, trimmedName)
+                    buildFlatModel()
+            } else {
+                // Rename only — patch in place, no scroll disturbance
+                cats.forEach(function(c, i) { c.sortOrder = i })
+                setCategories(cats)
+                if (oldName !== trimmedName) {
+                    renameCategoryInItems(oldName, trimmedName)
+                    var newColor = getCategoryColor(trimmedName)
+                    for (var fi = 0; fi < flatModel.count; fi++) {
+                        var row = flatModel.get(fi)
+                        if (row.category === oldName) {
+                            if (row.type === "categoryHeader")
+                                flatModel.setProperty(fi, "name", trimmedName)
+                                flatModel.setProperty(fi, "category",      trimmedName)
+                                flatModel.setProperty(fi, "categoryColor", newColor)
+                        }
+                    }
+                }
             }
 
-            // Re-number sortOrders sequentially
-            cats.forEach(function(c, i) { c.sortOrder = i })
-            setCategories(cats)
-
-            // Update all items that reference the old category name
-            if (oldName !== trimmedName)
-                renameCategoryInItems(oldName, trimmedName)
-
-                buildFlatModel()
-                pop()
+            pop()
         }
     }
 
