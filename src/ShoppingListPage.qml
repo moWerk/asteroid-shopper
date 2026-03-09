@@ -111,7 +111,7 @@ Item {
                 anchors.fill: parent
                 visible: model.categoryColor !== ""
                 color: model.categoryColor !== "" ? model.categoryColor : "transparent"
-                opacity: model.type === "categoryHeader" ? (model.allChecked ? 0.3 : 0.8) : (model.checked ? 0.3 : 0.5)
+                opacity: model.type === "categoryHeader" ? (model.allChecked ? 0.4 : 0.8) : (model.checked ? 0.3 : 0.5)
 
                 Behavior on opacity {
                     NumberAnimation { duration: 300; easing.type: Easing.InOutQuad }
@@ -124,11 +124,15 @@ Item {
                 anchors {
                     verticalCenter: parent.verticalCenter
                     left: parent.left
-                    leftMargin: Dims.l(9)
+                    leftMargin: Dims.l(17)
                 }
                 text: "#" + model.sortNum + " " + model.name
-                font.pixelSize: appStyle.secondaryFontSize
-                font.bold: true
+                font {
+                    pixelSize: appStyle.secondaryFontSize
+                    family:    "Noto Sans Condensed"
+                    styleName: "Bold"
+                    letterSpacing: Dims.l(0.8)
+                }
                 color: appStyle.labelColor
             }
 
@@ -152,8 +156,12 @@ Item {
 
                 Label {
                     text: model.name
-                    font.pixelSize: appStyle.bodyFontSize
-                    font.strikeout: model.checked
+                    font {
+                        pixelSize: appStyle.bodyFontSize
+                        strikeout: model.checked
+                        family:    "Noto Sans Condensed"
+                        styleName: "Medium"
+                    }
                     color: appStyle.labelColor
                     verticalAlignment: Text.AlignVCenter
                     horizontalAlignment: Text.AlignLeft
@@ -280,7 +288,7 @@ Item {
                     text: qsTrId("id-add-item")
                     font.pixelSize: appStyle.secondaryFontSize
                     font.bold: true
-                    color: appStyle.labelColor
+                    color: appStyle.dimLabelColor
                 }
 
                 HighlightBar {
@@ -332,7 +340,7 @@ Item {
                     : qsTrId("id-check-all")
                     font.pixelSize: appStyle.secondaryFontSize
                     font.bold: true
-                    color: appStyle.labelColor
+                    color: appStyle.dimLabelColor
                 }
 
                 HighlightBar {
@@ -376,7 +384,7 @@ Item {
                     text: qsTrId("id-show-all-lists")
                     font.pixelSize: appStyle.secondaryFontSize
                     font.bold: true
-                    color: appStyle.labelColor
+                    color: appStyle.dimLabelColor
                 }
 
                 HighlightBar {

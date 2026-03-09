@@ -95,7 +95,11 @@ Item {
                 }
                 //% "Starter Pack"
                 text: isDefault ? qsTrId("id-default") : model.name
-                font.pixelSize: appStyle.bodyFontSize
+                font {
+                    pixelSize: appStyle.bodyFontSize
+                    family:    "Noto Sans Condensed"
+                    styleName: "Medium"
+                }
                 color: appStyle.labelColor
                 elide: Text.ElideRight
             }

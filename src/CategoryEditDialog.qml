@@ -66,7 +66,7 @@ Item {
         id: nameField
         anchors {
             bottom: parent.verticalCenter
-            bottomMargin: Dims.l(6)
+            bottomMargin: Dims.l(10)
             horizontalCenter: parent.horizontalCenter
         }
         width: Dims.l(74)
@@ -80,7 +80,6 @@ Item {
         id: positionRow
         anchors {
             top: parent.verticalCenter
-            topMargin: Dims.l(6)
             left: parent.left
             right: parent.right
         }
@@ -104,8 +103,8 @@ Item {
                 right: positionLabel.left
                 rightMargin: Dims.l(8)
             }
-            width: Dims.l(11)
-            height: Dims.l(11)
+            width: appStyle.iconSize
+            height: appStyle.iconSize
             onClicked: currentPosition--
         }
 

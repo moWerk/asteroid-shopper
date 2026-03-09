@@ -159,14 +159,14 @@ Application {
 
     QtObject {
         id: appStyle
-        readonly property int    rowHeight:           Dims.l(17)
-        readonly property int    categoryHeaderHeight: Dims.l(13)
+        readonly property int    rowHeight:           Dims.l(16)
+        readonly property int    categoryHeaderHeight: Dims.l(14)
         readonly property int    footerRowHeight:      Dims.l(26)
-        readonly property int    footerDividerHeight:  Dims.l(13)
-        readonly property int    iconSize:             Dims.l(11)
-        readonly property int    bodyFontSize:         Dims.l(8)
-        readonly property int    secondaryFontSize:    Dims.l(6)
-        readonly property string separatorColor:       "#20ffffff"
+        readonly property int    footerDividerHeight:  Dims.l(10)
+        readonly property int    iconSize:             Dims.l(10)
+        readonly property int    bodyFontSize:         Dims.l(9)
+        readonly property int    secondaryFontSize:    Dims.l(7)
+        readonly property string separatorColor:       "#40ffffff"
         readonly property string pressColor:           "#33ffffff"
         readonly property string labelColor:           "#ffffff"
         readonly property string dimLabelColor:        "#80ffffff"
