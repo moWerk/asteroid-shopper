@@ -258,11 +258,7 @@ Item {
                 anchors { top: parent.top; left: parent.left; right: parent.right }
                 height: appStyle.footerDividerHeight
 
-                Rectangle {
-                    anchors { bottom: parent.bottom; left: parent.left; right: parent.right }
-                    height: 1
-                    color: appStyle.separatorColor
-                }
+                RowSeparator {}
             }
 
             // ── Add Item row ──────────────────────────────────────────
@@ -306,19 +302,14 @@ Item {
                         })
                     }
                 }
-            }
 
-            Rectangle {
-                id: footerSep1
-                anchors { top: addRow.bottom; left: parent.left; right: parent.right }
-                height: 1
-                color: appStyle.separatorColor
+                RowSeparator {}
             }
 
             // ── Check / Uncheck All row ───────────────────────────────
             Item {
                 id: checkRow
-                anchors { top: footerSep1.bottom; left: parent.left; right: parent.right }
+                anchors { top: addRow.bottom; left: parent.left; right: parent.right }
                 height: appStyle.footerRowHeight
 
                 Icon {
@@ -350,19 +341,14 @@ Item {
                 HighlightBar {
                     onClicked: appState.anyChecked ? uncheckAll() : checkAll()
                 }
-            }
 
-            Rectangle {
-                id: footerSep2
-                anchors { top: checkRow.bottom; left: parent.left; right: parent.right }
-                height: 1
-                color: appStyle.separatorColor
+                RowSeparator {}
             }
 
             // ── Edit List row ─────────────────────────────────────────
             Item {
                 id: editRow
-                anchors { top: footerSep2.bottom; left: parent.left; right: parent.right }
+                anchors { top: checkRow.bottom; left: parent.left; right: parent.right }
                 height: appStyle.footerRowHeight
 
                 Icon {
@@ -399,21 +385,15 @@ Item {
                         })
                     }
                 }
-            }
 
-            Rectangle {
-                id: footerSepEdit
-                visible: hasUserLists
-                anchors { top: editRow.bottom; left: parent.left; right: parent.right }
-                height: hasUserLists ? 1 : 0
-                color: appStyle.separatorColor
+                RowSeparator { visible: hasUserLists || appState.currentListName === "default" }
             }
 
             // ── All My Hauls row ──────────────────────────────────────
             Item {
                 id: allListsRow
                 visible: hasUserLists
-                anchors { top: footerSepEdit.bottom; left: parent.left; right: parent.right }
+                anchors { top: editRow.bottom; left: parent.left; right: parent.right }
                 height: hasUserLists ? appStyle.footerRowHeight : 0
 
                 Icon {
@@ -445,27 +425,21 @@ Item {
                         pop: function() { layerStack.pop() }
                     })
                 }
+
+                RowSeparator {}
             }
 
             Item {
-                id: spacerAfterLists
+                id: bottomSpacer
                 anchors { top: allListsRow.bottom; left: parent.left; right: parent.right }
-                height: hasUserLists ? Dims.l(10) : 0
-            }
-
-            Rectangle {
-                id: footerSep3
-                visible: hasUserLists
-                anchors { top: spacerAfterLists.bottom; left: parent.left; right: parent.right }
-                height: hasUserLists ? 1 : 0
-                color: appStyle.separatorColor
+                height: (hasUserLists && appState.currentListName !== "default") ? Dims.l(10) : 0
             }
 
             Label {
                 id: warningLabel
                 visible: appState.currentListName === "default"
                 anchors {
-                    top: hasUserLists ? footerSep3.bottom : footerSepEdit.bottom
+                    top: bottomSpacer.bottom
                     topMargin: Dims.l(5)
                     left: parent.left
                     right: parent.right
