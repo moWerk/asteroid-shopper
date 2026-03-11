@@ -165,13 +165,13 @@ Item {
                         right: parent.right
                         rightMargin: Dims.l(4)
                     }
-                    height: Dims.l(12.5)
                     text: model.name
                     font.pixelSize: appStyle.bodyFontSize
                     font.family:    "Noto Sans Condensed"
                     font.styleName: "Medium"
                     font.strikeout: model.checked
                     color: appStyle.labelColor
+                    speed: 1.2
                 }
             }
 
