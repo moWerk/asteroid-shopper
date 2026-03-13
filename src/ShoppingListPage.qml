@@ -246,8 +246,7 @@ Item {
             height: appStyle.footerDividerHeight
             + Dims.l(52)
             + appStyle.footerRowHeight
-            + (hasUserLists ? appStyle.footerRowHeight : 0)
-            + (hasUserLists ? Dims.l(10) : 0)
+            + appStyle.footerRowHeight
             + (appState.currentListName === "default"
             ? warningLabel.height + (DeviceSpecs.hasRoundScreen ? Dims.l(24) : Dims.l(12))
             : 0)
@@ -386,15 +385,14 @@ Item {
                     }
                 }
 
-                RowSeparator { visible: hasUserLists || appState.currentListName === "default" }
+                RowSeparator { }
             }
 
             // ── All My Hauls row ──────────────────────────────────────
             Item {
                 id: allListsRow
-                visible: hasUserLists
                 anchors { top: editRow.bottom; left: parent.left; right: parent.right }
-                height: hasUserLists ? appStyle.footerRowHeight : 0
+                height: appStyle.footerRowHeight
 
                 Icon {
                     id: allListsIcon
@@ -432,7 +430,7 @@ Item {
             Item {
                 id: bottomSpacer
                 anchors { top: allListsRow.bottom; left: parent.left; right: parent.right }
-                height: (hasUserLists && appState.currentListName !== "default") ? Dims.l(10) : 0
+                height: appState.currentListName !== "default" ? Dims.l(10) : 0
             }
 
             Label {
