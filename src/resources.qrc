@@ -5,6 +5,5 @@
         <file>AllListsPage.qml</file>
         <file>EditDialog.qml</file>
         <file>CategoryEditDialog.qml</file>
-        <file>RowSeparator.qml</file>
     </qresource>
 </RCC>

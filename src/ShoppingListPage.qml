@@ -257,7 +257,7 @@ Item {
                 anchors { top: parent.top; left: parent.left; right: parent.right }
                 height: appStyle.footerDividerHeight
 
-                RowSeparator {}
+                RowSeparator { pinToBottom: true }
             }
 
             // ── Add Item row ──────────────────────────────────────────
@@ -302,7 +302,7 @@ Item {
                     }
                 }
 
-                RowSeparator {}
+                RowSeparator { pinToBottom: true }
             }
 
             // ── Check / Uncheck All row ───────────────────────────────
@@ -341,7 +341,7 @@ Item {
                     onClicked: appState.anyChecked ? uncheckAll() : checkAll()
                 }
 
-                RowSeparator {}
+                RowSeparator { pinToBottom: true }
             }
 
             // ── Edit List row ─────────────────────────────────────────
@@ -385,7 +385,7 @@ Item {
                     }
                 }
 
-                RowSeparator { }
+                RowSeparator { pinToBottom: true }
             }
 
             // ── All My Hauls row ──────────────────────────────────────
@@ -424,7 +424,7 @@ Item {
                     })
                 }
 
-                RowSeparator {}
+                RowSeparator { pinToBottom: true }
             }
 
             Item {

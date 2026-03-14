@@ -121,7 +121,7 @@ Item {
             }
 
             // Row separator
-            RowSeparator {}
+            RowSeparator { pinToBottom: true }
 
             // Press highlight
             Rectangle {
