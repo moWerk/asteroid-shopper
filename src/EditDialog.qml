@@ -175,7 +175,7 @@ Item {
                 OptionCycler {
                     anchors.fill: parent
                     //% "Tap to change category"
-                    title: qsTrId("id-tap-to-change-category")
+                    text: qsTrId("id-tap-to-change-category")
                     valueArray:   editDialog.categoryOptions
                     currentValue: editDialog.selectedCategory
                     onValueChanged: editDialog.selectedCategory = value
@@ -196,7 +196,7 @@ Item {
                 OptionCycler {
                     anchors.fill: parent
                     //% "Tap to select target"
-                    title: qsTrId("id-tap-to-select-target")
+                    text: qsTrId("id-tap-to-select-target")
                     valueArray:   editDialog.listOptions
                     currentValue: editDialog.selectedList
                     onValueChanged: editDialog.selectedList = value
