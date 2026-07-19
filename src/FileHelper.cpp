@@ -49,7 +49,6 @@ QString FileHelper::readFile(const QString &listName)
         return QString();
     }
     QTextStream in(&file);
-    in.setCodec("UTF-8");
     QString content = in.readAll();
     file.close();
     return content;
@@ -65,7 +64,6 @@ bool FileHelper::writeFile(const QString &listName, const QString &content)
         return false;
     }
     QTextStream out(&file);
-    out.setCodec("UTF-8");
     out << content;
     file.close();
     return true;
