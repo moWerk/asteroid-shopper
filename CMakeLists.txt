@@ -5,17 +5,17 @@ project(asteroid-shopper
 	DESCRIPTION "A simple shopping list app for AsteroidOS")
 
 find_package(ECM REQUIRED NO_MODULE)
-find_package(AsteroidApp REQUIRED)
+find_package(AsteroidApp6 REQUIRED)
 
 set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${ASTEROID_MODULE_PATH})
 
 include(FeatureSummary)
 include(GNUInstallDirs)
 include(ECMFindQmlModule)
-include(AsteroidCMakeSettings)
-include(AsteroidTranslations)
+include(Asteroid6CMakeSettings)
+include(Asteroid6Translations)
 
-find_package(Qt5 COMPONENTS Core Qml Quick REQUIRED)
+find_package(Qt6 COMPONENTS Core Qml Quick REQUIRED)
 
 build_translations(i18n)
 generate_desktop(${CMAKE_SOURCE_DIR} ${CMAKE_PROJECT_NAME})
